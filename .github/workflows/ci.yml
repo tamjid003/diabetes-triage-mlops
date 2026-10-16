@@ -31,3 +31,18 @@ jobs:
 
       - name: Smoke-test model training
         run: python src/train_v02.py
+
+      - name: Build Docker image
+        run: docker build -t diabetes-triage:test .
+
+      - name: Run Docker container
+        run: |
+          docker run -d --name diabetes-triage-test -p 8000:80 diabetes-triage:test
+
+      - name: Test container health
+        run: |
+          python -c "import time, urllib.request; url='http://127.0.0.1:8000/health'; exec('for attempt in range(20):\n try:\n  response=urllib.request.urlopen(url, timeout=2)\n  break\n except Exception:\n  time.sleep(1)\nelse:\n raise SystemExit(\"Container health check failed\")'); print(response.read().decode()); assert 'v0.2' in response.read().decode()"
+
+      - name: Stop Docker container
+        if: always()
+        run: docker rm -f diabetes-triage-test
