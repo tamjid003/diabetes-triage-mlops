@@ -1,0 +1,10 @@
+{
+  "model_version": "v0.1",
+  "model_type": "StandardScaler + LinearRegression",
+  "dataset": "scikit-learn diabetes regression dataset",
+  "n_samples": 442,
+  "n_features": 10,
+  "test_size": 0.2,
+  "random_state": 42,
+  "rmse": 53.85344583676594
+}
