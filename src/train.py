@@ -15,10 +15,13 @@ MODEL_PATH = ARTIFACTS_DIR / "model.joblib"
 
 
 def train_model():
+
+    # Load the diabetes dataset from sklearn
     Xy = load_diabetes(as_frame=True)
     X = Xy.frame.drop(columns=["target"])
     y = Xy.frame["target"]
-
+    
+    # Use the same random split for reproducible evaluation for v01 and v02
     X_train, X_test, y_train, y_test = train_test_split(
         X,
         y,
@@ -26,6 +29,7 @@ def train_model():
         random_state=42,
     )
 
+    # Baseline model: simple StandardScaler + LinearRegression
     model = Pipeline(
         [
             ("scaler", StandardScaler()),
@@ -33,10 +37,12 @@ def train_model():
         ]
     )
 
+    # Train and evaluate v01 model
     model.fit(X_train, y_train)
     predictions = model.predict(X_test)
     rmse = float(np.sqrt(np.mean((y_test - predictions) ** 2)))
 
+    # Save the fitted v01 model
     ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
     joblib.dump(model, MODEL_PATH)
 
