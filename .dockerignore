@@ -1,0 +1,16 @@
+# Virtual environments
+.venv
+.env
+
+# Python cache files
+__pycache__/
+.pytest_cache/
+*.py
+*.pyc
+
+.ruff_cache/
+
+# Git files
+.git/
+.gitignore/
+.github\workflow/
